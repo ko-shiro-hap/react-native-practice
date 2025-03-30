@@ -7,19 +7,26 @@ import { StatusBar } from "expo-status-bar";
 import PlaceholderImage from "@/assets/images/background-image.png";
 import { Button } from "@/components/button";
 import { CircleButton } from "@/components/circle-button";
+import { EmojiPicker } from "@/components/emoji-picker";
 import { IconButton } from "@/components/icon-button";
 import { ImageViewer } from "@/components/image-viewer";
 
 const App: FC = () => {
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const onReset = () => {
     setShowAppOptions(false);
   };
 
+  const onModalClose = () => {
+    setIsModalVisible(false);
+  };
+
   const onAddSticker = () => {
     // 後ほど追加します
+    setIsModalVisible(true);
   };
 
   const onSaveImageAsync = async () => {
@@ -48,6 +55,10 @@ const App: FC = () => {
           selectedImage={selectedImage}
         />
       </View>
+      <EmojiPicker
+        isVisible={isModalVisible}
+        onClose={onModalClose}
+      ></EmojiPicker>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
           <View style={styles.optionsRow}>
@@ -79,10 +90,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#25292e",
     alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: "#fff",
   },
   imageContainer: {
     flex: 1,
@@ -95,7 +102,6 @@ const styles = StyleSheet.create({
   optionsContainer: {
     position: "absolute",
     bottom: 80,
-    width: "100%",
   },
   optionsRow: {
     alignItems: "center",
