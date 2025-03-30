@@ -10,6 +10,7 @@ import { ImageViewer } from "@/components/image-viewer";
 
 const App: FC = () => {
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
+  const [showAppOptions, setShowAppOptions] = useState(false);
 
   const pickImageAsync = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -19,6 +20,7 @@ const App: FC = () => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setShowAppOptions(true);
     } else {
       alert("画像が選択されていません");
     }
@@ -32,10 +34,17 @@ const App: FC = () => {
           selectedImage={selectedImage}
         />
       </View>
-      <View style={styles.footerContainer}>
-        <Button theme="primary" label="写真を選択" onPress={pickImageAsync} />
-        <Button label="この写真を使用" />
-      </View>
+      {showAppOptions ? (
+        <View />
+      ) : (
+        <View style={styles.footerContainer}>
+          <Button theme="primary" label="写真を選択" onPress={pickImageAsync} />
+          <Button
+            label="この写真を使用"
+            onPress={() => setShowAppOptions(true)}
+          />
+        </View>
+      )}
       <StatusBar style="auto" />
     </View>
   );
